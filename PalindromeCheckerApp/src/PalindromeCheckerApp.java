@@ -1,32 +1,36 @@
 /**
  * ============================================================
- * MAIN CLASS -Palindrome Check Using String Reverse
+ * MAIN CLASS -UC4: Character Array Based Palindrome Check
  * ===========================================================
- * use case 3- Reverse string based palindrome
+ *
+ * UC4: Character Array Based Palindrome Check
  *
  * Description:
- * this class checks eheter a string is palindrome by reverse string based
- * the reverse dstring is checked with the original one
- * At this stage , the application
- *the application usesa a imple backward string matching and checks with the original string and validates it
+ * this class converts the string to array and checks from the elements  from start character with ending char at the same time
  *
  * @author Vicky
- * @version 3.0
+ * @version 4.0
  */
 public class PalindromeCheckerApp {
     public static void main(String[] args){
-        String input="madam";
-        String reversed="";
-        for(int i=input.length()-1;i>=0;i--){
-            reversed +=input.charAt(i);
-        }
-        if(reversed.equals(input)){
-            System.out.println("it is palindrome ");
 
-        }
-        else{
-            System.out.println("it is not palindrome");
+        String input = "radar";
+        System.out.println("Input: " + input);
+
+        char[] chars = input.toCharArray();
+        int start = 0;
+        int end = chars.length - 1;
+        boolean isPalindrome = true;
+
+        while (start < end) {
+            if (chars[start] != chars[end]) {
+                isPalindrome = false;
+                break;
+            }
+            start++;   // move forward
+            end--;     // move backward
         }
 
+        System.out.println("Is Palindrome? : " + isPalindrome);
     }
 }
