@@ -1,34 +1,35 @@
+import java.util.Stack;
+
 /**
  * ============================================================
- * MAIN CLASS -UC4: Character Array Based Palindrome Check
+ * MAIN CLASS -UC5: Stack-Based Palindrome Checker
  * ===========================================================
  *
- * UC4: Character Array Based Palindrome Check
+ * UC5: Stack-Based Palindrome Checker
  *
  * Description:
  * this class converts the string to array and checks from the elements  from start character with ending char at the same time
- *
+ *first it push the string to stack
+ * then it pops the value and checks whether the string is palindrome or not
  * @author Vicky
- * @version 4.0
+ * @version 5.0
  */
 public class PalindromeCheckerApp {
     public static void main(String[] args){
 
-        String input = "radar";
+        String input = "noon";
         System.out.println("Input: " + input);
-
-        char[] chars = input.toCharArray();
-        int start = 0;
-        int end = chars.length - 1;
         boolean isPalindrome = true;
-
-        while (start < end) {
-            if (chars[start] != chars[end]) {
-                isPalindrome = false;
+        Stack<Character> stack= new Stack<>();
+        for (char c : input.toCharArray()) {
+            stack.push(c);}
+        for(char c: input.toCharArray()){
+            if(c!= stack.pop()){
+                isPalindrome=false;
                 break;
+
             }
-            start++;   // move forward
-            end--;     // move backward
+
         }
 
         System.out.println("Is Palindrome? : " + isPalindrome);
