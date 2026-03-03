@@ -1,51 +1,100 @@
 /**
  * =========================================================
- * MAIN CLASS - UseCase11PalindromeCheckerApp
+ * MAIN CLASS - UseCase12PalindromeCheckerApp
  * =========================================================
  *
- * Use Case 11: Object-Oriented Palindrome Service
+ * Use Case 12: Strategy Pattern for Palindrome Algorithms
  *
  * Description:
- * This class demonstrates palindrome validation using
- * object-oriented design.
- *
- * The palindrome logic is encapsulated inside a
- * PalindromeService class.
- *
- * This improves:
- * - Reusability
- * - Readability
- * - Separation of concerns
+ * This class demonstrates how different palindrome
+ * validation algorithms can be selected dynamically
+ * at runtime using the Strategy Design Pattern.
  *
  * @author vicky
- * @version 11.0
+ * @version 12.0
  */
 
-import java.util.Scanner;
+public class PalindromeCheckerApp {
 
-public class PalindromeCheckerApp {    public static void main(String[] args) {
+    public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
+        // Input given directly in code
+        String input = "level";
 
-        System.out.print("Input : ");
-        String input = scanner.nextLine();
-        PalindromeService service = new PalindromeService();
-        boolean result = service.checkPalindrome(input);
+        System.out.println("Input : " + input);
+
+        // Choose strategy at runtime
+        PalindromeStrategy strategy;
+
+        // You can switch strategy here
+        strategy = new StackStrategy();
+        // strategy = new DequeStrategy();
+
+        boolean result = strategy.check(input);
+
         System.out.println("Is Palindrome? : " + result);
-        scanner.close();
     }
 }
-class PalindromeService {
-    public boolean checkPalindrome(String input) {
-        int start = 0;
-        int end = input.length() - 1;
-        while (start < end) {
-            if (input.charAt(start) != input.charAt(end)) {
+
+/**
+ * =========================================================
+ * INTERFACE - PalindromeStrategy
+ * =========================================================
+ *
+ * Defines a contract for all palindrome strategies.
+ */
+interface PalindromeStrategy {
+    boolean check(String input);
+}
+
+/**
+ * =========================================================
+ * CLASS - StackStrategy
+ * =========================================================
+ *
+ * Stack-based palindrome implementation.
+ */
+class StackStrategy implements PalindromeStrategy {
+
+    public boolean check(String input) {
+
+        java.util.Stack<Character> stack = new java.util.Stack<>();
+
+        // Push all characters onto stack
+        for (char c : input.toCharArray()) {
+            stack.push(c);
+        }
+
+        // Compare by popping
+        for (char c : input.toCharArray()) {
+            if (c != stack.pop()) {
                 return false;
             }
-            start++;
-            end--;
         }
+
+        return true;
+    }
+}
+
+/**
+ * =========================================================
+ * CLASS - DequeStrategy
+ * =========================================================
+ *
+ * Deque-based palindrome implementation.
+ */
+class DequeStrategy implements PalindromeStrategy {
+    public boolean check(String input) {
+        java.util.Deque<Character> deque = new java.util.ArrayDeque<>();
+        for (char c : input.toCharArray()) {
+            deque.addLast(c);
+        }
+        while (deque.size() > 1) {
+            if (deque.removeFirst() != deque.removeLast()) {
+                return false;
+            }
+        }
+
         return true;
     }
 }
