@@ -1,17 +1,22 @@
 /**
  * =========================================================
- * MAIN CLASS - UseCase12PalindromeCheckerApp
+ * MAIN CLASS - UseCase13PalindromeCheckerApp
  * =========================================================
  *
- * Use Case 12: Strategy Pattern for Palindrome Algorithms
+ * Use Case 13: Performance Comparison
  *
  * Description:
- * This class demonstrates how different palindrome
- * validation algorithms can be selected dynamically
- * at runtime using the Strategy Design Pattern.
+ * This class measures and compares the execution
+ * performance of palindrome validation algorithms.
  *
- * @author vicky
- * @version 12.0
+ * It:
+ * - Uses different palindrome strategies
+ * - Captures execution start and end time
+ * - Calculates total execution duration
+ * - Displays benchmarking results
+ *
+ * @author Vicky
+ * @version 13.0
  */
 
 public class PalindromeCheckerApp {
@@ -23,74 +28,55 @@ public class PalindromeCheckerApp {
 
         System.out.println("Input : " + input);
 
-        // Choose strategy at runtime
-        PalindromeStrategy strategy;
+        // Strategy 1: Two Pointer Approach
+        long start1 = System.nanoTime();
+        boolean result1 = twoPointerCheck(input);
+        long end1 = System.nanoTime();
 
-        // You can switch strategy here
-        strategy = new StackStrategy();
-        // strategy = new DequeStrategy();
+        long duration1 = end1 - start1;
 
-        boolean result = strategy.check(input);
+        // Strategy 2: Stack Approach
+        long start2 = System.nanoTime();
+        boolean result2 = stackCheck(input);
+        long end2 = System.nanoTime();
 
-        System.out.println("Is Palindrome? : " + result);
+        long duration2 = end2 - start2;
+
+        System.out.println("Two Pointer Result : " + result1);
+        System.out.println("Two Pointer Time   : " + duration1 + " ns");
+
+        System.out.println("Stack Result       : " + result2);
+        System.out.println("Stack Time         : " + duration2 + " ns");
     }
-}
 
-/**
- * =========================================================
- * INTERFACE - PalindromeStrategy
- * =========================================================
- *
- * Defines a contract for all palindrome strategies.
- */
-interface PalindromeStrategy {
-    boolean check(String input);
-}
+    // Two-pointer palindrome check
+    private static boolean twoPointerCheck(String input) {
 
-/**
- * =========================================================
- * CLASS - StackStrategy
- * =========================================================
- *
- * Stack-based palindrome implementation.
- */
-class StackStrategy implements PalindromeStrategy {
+        int start = 0;
+        int end = input.length() - 1;
 
-    public boolean check(String input) {
-
-        java.util.Stack<Character> stack = new java.util.Stack<>();
-
-        // Push all characters onto stack
-        for (char c : input.toCharArray()) {
-            stack.push(c);
-        }
-
-        // Compare by popping
-        for (char c : input.toCharArray()) {
-            if (c != stack.pop()) {
+        while (start < end) {
+            if (input.charAt(start) != input.charAt(end)) {
                 return false;
             }
+            start++;
+            end--;
         }
 
         return true;
     }
-}
 
-/**
- * =========================================================
- * CLASS - DequeStrategy
- * =========================================================
- *
- * Deque-based palindrome implementation.
- */
-class DequeStrategy implements PalindromeStrategy {
-    public boolean check(String input) {
-        java.util.Deque<Character> deque = new java.util.ArrayDeque<>();
+    // Stack-based palindrome check
+    private static boolean stackCheck(String input) {
+
+        java.util.Stack<Character> stack = new java.util.Stack<>();
+
         for (char c : input.toCharArray()) {
-            deque.addLast(c);
+            stack.push(c);
         }
-        while (deque.size() > 1) {
-            if (deque.removeFirst() != deque.removeLast()) {
+
+        for (char c : input.toCharArray()) {
+            if (c != stack.pop()) {
                 return false;
             }
         }
